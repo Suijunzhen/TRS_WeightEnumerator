@@ -1,0 +1,17 @@
+function N21evaluate(S, k, eta1, eta2)
+F:=Parent(eta1);
+P<x>:=PolynomialRing(F);
+T:=Subsets(S,k);
+e:=0;
+for t in T 
+  do p:=1;  
+  for a in t 
+   do p*:=x-a; 
+  end for; 
+  c:=Coefficients(p); 
+  if eta1*c[k] eq 1 and eta2*c[k-1] eq 0 
+  then e:=e+1;
+  end if;
+end for;
+return e;
+end function;
