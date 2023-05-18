@@ -1,0 +1,37 @@
+function eta(a) 
+F:=Parent(a);
+S:={x^2: x in F};
+if a in S then return 1; else return -1; end if;
+end function;
+
+function N33evaluate(S, k, eta1, eta2)
+F:=Parent(eta1);
+f:={};
+for u in F do 
+for v in F do 
+if eta(u^2-4*v) eq 1 then f:=f join {[u,v]}; end if;
+end for; 
+end for;
+P<x>:=PolynomialRing(F);
+V:=VectorSpace(F,3);
+T:=Subsets(S,k-1);
+e:=0;
+for a in f 
+  do u:=a[1]; v:=a[2];  R:={(-u-Sqrt(u^2-4*v))/2, (-u+Sqrt(u^2-4*v))/2};
+  for t in T 
+    do p:=1; 
+   if IsEmpty(R meet (S diff t)) then  
+    for b in t 
+     do p*:=x-b; 
+    end for; 
+    c:=Coefficients(p);  
+    d1:=V![1,u,v]; d2:=V![eta1*c[k-2]-c[k-1],eta1*c[k-1]-1,eta1];
+    d3:=V![eta2*c[k-3]-1,eta2*c[k-2],eta2*c[k-1]];
+     if InnerProduct(d1,d2) eq 0 and 
+     InnerProduct(d1,d3) eq 0 then e:=e+1; 
+     end if;
+   end if;
+  end for;
+end for;
+return e;
+end function;
