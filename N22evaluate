@@ -1,0 +1,21 @@
+function N22evaluate(S, k, eta1, eta2)
+F:=Parent(eta1);
+F1:={x: x in F};
+P<x>:=PolynomialRing(F);
+T:=Subsets(S,k);
+e:=0;
+for t in T 
+  do p:=1;  D:=(F1 diff S) join t; 
+  for a in t 
+   do p*:=x-a; 
+  end for; 
+  c:=Coefficients(p);
+  for lambda in D do  
+  if eta1*c[k-1]-c[k] eq lambda*(eta1*c[k]-1) 
+    and eta2*c[k-2]-1 eq lambda*eta2*c[k-1] 
+  then e:=e+1;
+  end if;
+  end for;
+end for;
+return e;
+end function;
